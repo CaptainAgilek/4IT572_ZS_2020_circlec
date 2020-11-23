@@ -1,18 +1,34 @@
-vse: &vse
-  docker:
-    - image: circleci/node:8.11.3
-
+vse:
+  docker: &vse
+    - image: 'circleci/node:8.11.3'
 version: 2.1
 jobs:
   build:
-    <<: *vse
+    docker: *vse
     steps:
       - checkout
       - run: npm install
       - run: npm run test
       - run: npm build
+      - persist_to_workspace:
+         root: .
+         paths:
+           - .
+  deploy:
+    docker: *vse
+    steps:
+      - attach_workspace:
+         at: .
+      - run:
+         command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
 workflows:
   version: 2.1
   build:
     jobs:
       - build
+      - deploy:
+         requires:
+           - build
+         filters:
+           branches:
+             only: master
