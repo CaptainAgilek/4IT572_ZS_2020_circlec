@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM node:8
 
 COPY . .
 
