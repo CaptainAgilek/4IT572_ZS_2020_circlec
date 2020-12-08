@@ -1,4 +1,4 @@
-FROM node:8
+FROM node:8-alpine
 
 ENV \
 	NPM_CONFIG_UNSAFE_PERM=true
