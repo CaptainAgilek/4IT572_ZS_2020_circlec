@@ -4,9 +4,9 @@ ENV \
 	NPM_CONFIG_UNSAFE_PERM=true
   
 COPY . .
-
-USER node
   
+RUN npm config set unsafe-perm true
+
 RUN npm install \
     && npm run build
 
